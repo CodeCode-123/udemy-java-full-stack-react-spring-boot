@@ -3,11 +3,11 @@ package com.example.beans;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
-public class Vehicle {
+@Component
+public class Engine {
     private String name;
-
-    public Vehicle() {
-        System.out.println("Vehicle bean created by Spring");
+    public Engine() {
+        System.out.println("Engine bean created by Spring");
     }
 
     public String getName() {
@@ -18,13 +18,14 @@ public class Vehicle {
         this.name = name;
     }
 
-    public void sayHello() {
-        System.out.println("Printing Hello from Component Vehicle Bean");
+    @PostConstruct
+    public void initialize() {
+        this.name = "V8";
     }
 
     @Override
     public String toString() {
-        return "Vehicle{" +
+        return "Engine{" +
                 "name='" + name + '\'' +
                 '}';
     }
