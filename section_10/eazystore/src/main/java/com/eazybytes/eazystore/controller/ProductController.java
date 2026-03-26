@@ -26,7 +26,8 @@ public class ProductController {
 //    }
 
     @GetMapping
-    public List<ProductDto> getProducts() { // DTO Pattern
+    public List<ProductDto> getProducts() throws InterruptedException { // DTO Pattern
+        Thread.sleep(3000);
         return productService.getProducts();
     }
 }

@@ -7,7 +7,14 @@ import { Link } from 'react-router-dom';
 import { useRouteError } from 'react-router-dom';
 
 export default function ErrorPage() {
+  // display router error if there is an error, mapping to routeError.data
   const routeError = useRouteError();
+  let errorTitle = "Oops! Something went wrong";
+  let errorMessage = "An unexpected error occurred. Please try again later.";
+  if (routeError) {
+    errorTitle = routeError.status;
+    errorMessage = routeError.data;
+  }
   return (
     <div className="flex flex-col min-h-[980px]">
       <Header/>
@@ -15,11 +22,11 @@ export default function ErrorPage() {
         <main className="grow">
           <div className="py-12 bg-normalbg dark:bg-darkbg font-primary">
             <div className="max-w-4xl mx-auto px-4">
-              <PageTitle title={routeError.status} />
+              <PageTitle title={errorTitle} />
             </div>
             <div className="text-center text-gray-600 dark:text-lighter flex flex-col items-center">
               <p className="max-w-[576px] px-2 mx-auto leading-6 mb-4">
-                {routeError.data}
+                {errorMessage}
               </p>
               <img
                 src={errorImage}
