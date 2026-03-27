@@ -27,7 +27,8 @@ public class ProductController {
 
     @GetMapping
     public List<ProductDto> getProducts() throws InterruptedException { // DTO Pattern
-        Thread.sleep(3000);
+        // used to test loading using useNavigation
+        //Thread.sleep(3000);
         return productService.getProducts();
     }
 }

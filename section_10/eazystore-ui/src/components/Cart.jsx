@@ -8,7 +8,10 @@ import PageTitle from './PageTitle';
 export default function Cart() {
   const navigation = useNavigate();
   const handleClick = () => {
-    navigation("/home", { state: { username: "madan" } });
+    console.log("Navigating programatically");
+    navigation("/home", { state: { username: "madan" } }); // state, allow to add data to the upcoming component
+    //navigation("/home", { replace: true }); // replace the current entry in the history with a new one
+    //navigation(-1); // navigate the previously navigated page
   };
 
   return (

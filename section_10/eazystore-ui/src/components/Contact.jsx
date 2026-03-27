@@ -8,12 +8,15 @@ import { useEffect, useRef } from "react";
 import apiClient from "../api/apiClient";
 import "react-toastify/dist/ReactToastify.css";
 import PageTitle from "./PageTitle";
+import { redirect } from "react-router-dom";
 
 export default function Contact() {
   const actionData = useActionData();
   const formRef = useRef(null);
+  // try to avoid submit multiple times
   const navigation = useNavigation();
   const submit = useSubmit();
+  // when the state value is submitting, indicating the saving operation is in progress
   const isSubmitting = navigation.state === "submitting";
   useEffect(() => {
     if (actionData?.success) {
@@ -21,7 +24,8 @@ export default function Contact() {
       toast.success("Your message has been submitted successfully!");
     }
   }, [actionData]);
-
+  
+  // use useSubmit if you'd like to submit the form manually
   const handleSubmit = (event) => {
     event.preventDefault();
     const userConfirmed = window.confirm(
@@ -53,7 +57,7 @@ export default function Contact() {
       {/* Contact Form */}
       <Form
         method="POST"
-        ref={formRef}
+        ref={formRef} /*This entire form will be assigned as the current attribute under these formRef */
         onSubmit={handleSubmit}
         className="space-y-6 max-w-[768px] mx-auto"
       >
@@ -142,6 +146,7 @@ export default function Contact() {
 }
 
 export async function contactAction({ request, params }) {
+  // populate the request data from the Form
   const data = await request.formData();
 
   const contactData = {
@@ -151,9 +156,11 @@ export async function contactAction({ request, params }) {
     message: data.get("message"),
   };
   try {
+    // send the data to the backend, the POST should be mentioned in the backend
+    // @PostMapping, in the html/jsx <Form method="POST" .../>, and apiClient.post();
     await apiClient.post("/contacts", contactData);
     return { success: true };
-    // return redirect("/home");
+    //return redirect("/home"); // if use redirect() to home page after submission
   } catch (error) {
     throw new Response(
       error.message || "Failed to submit your message. Please try again.",

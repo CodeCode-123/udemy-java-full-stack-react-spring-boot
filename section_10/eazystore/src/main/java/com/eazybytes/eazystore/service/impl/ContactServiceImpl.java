@@ -1,31 +1,38 @@
 package com.eazybytes.eazystore.service.impl;
 
+import com.eazybytes.eazystore.dto.ContactRequestDto;
 import com.eazybytes.eazystore.dto.ProductDto;
+import com.eazybytes.eazystore.entity.Contact;
 import com.eazybytes.eazystore.entity.Product;
-import com.eazybytes.eazystore.repository.ProductRepository;
-import com.eazybytes.eazystore.service.IProductService;
+import com.eazybytes.eazystore.repository.ContactRepository;
+import com.eazybytes.eazystore.service.IContactService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.time.Instant;
 
 @Service
 @RequiredArgsConstructor
-public class ProductServiceImpl implements IProductService {
-    private final ProductRepository productRepository;
+public class ContactServiceImpl implements IContactService {
+    private final ContactRepository contactRepository;
 
     @Override
-    public List<ProductDto> getProducts() {
-        return productRepository.findAll()
-                .stream().map(this::transformToDTO).collect(Collectors.toList());
+    public boolean saveContact(ContactRequestDto contactRequestDto) {
+        try {
+            Contact contact = transformToEntity(contactRequestDto);
+            contact.setCreatedAt(Instant.now());
+            contact.setCreatedBy(contactRequestDto.getName());
+            contactRepository.save(contact);
+            return true;
+        } catch (Exception exception) {
+            return false;
+        }
     }
 
-    private ProductDto transformToDTO(Product product) {
-        ProductDto productDto = new ProductDto();
-        // copy all the fields of product to productDto
-        BeanUtils.copyProperties(product, productDto);
-        return productDto;
+    private Contact transformToEntity(ContactRequestDto contactRequestDto) {
+        Contact contact = new Contact();
+        BeanUtils.copyProperties(contactRequestDto, contact);
+        return contact;
     }
 }
