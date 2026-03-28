@@ -23,7 +23,11 @@ export async function productsLoader() {
         return response.data; // Update products state with fetched data
     } catch (error) {
         throw new Response(
-            error.message || "Failed to fetch products. Please try again.",
+            // error.response?.data.errorMessage, if there is a ResponseEntity with errorMessage
+            // get the errorMessage from the backend
+            error.response?.data?.errorMessage || 
+            error.message || 
+            "Failed to fetch products. Please try again.",
             { status: error.status || 500 }
         );
     }

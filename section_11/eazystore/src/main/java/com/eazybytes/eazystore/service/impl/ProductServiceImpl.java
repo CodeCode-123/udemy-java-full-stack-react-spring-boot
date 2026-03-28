@@ -26,6 +26,8 @@ public class ProductServiceImpl implements IProductService {
         ProductDto productDto = new ProductDto();
         // copy all the fields of product to productDto
         BeanUtils.copyProperties(product, productDto);
+        productDto.setProductId(product.getProductId());
+        //throw new RuntimeException("Oops something bad happened");
         return productDto;
     }
 }

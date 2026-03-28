@@ -1,8 +1,10 @@
 package com.eazybytes.eazystore.controller;
 
 import com.eazybytes.eazystore.dto.UserDto;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.RequestEntity;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -13,6 +15,38 @@ public class DummyController {
         System.out.println(userDto);
         return "User created successfully";
     }
+
+    @PostMapping("/request-entity")
+    public String createUserWithEntity(RequestEntity<UserDto> requestEntity) {
+        // RequestEntity can get both request header and request body
+        HttpHeaders headers = requestEntity.getHeaders();
+        UserDto userDto = requestEntity.getBody();
+        //String queryString = requestEntity.getUrl().getQuery();
+        //String queryString = requestEntity.getUrl().getPath();
+        return "User created successfully";
+    }
+
+    @GetMapping("/headers")
+    public String readHeaders(@RequestHeader(name="User-Agent") String userAgent,
+                              @RequestHeader(name="User-Location", required = false) String userLocation) {
+        // list of HTTP header fields, e.g. Host, User-Agent, Accept, Connection
+        return "Received headers with value: " + userAgent + ": " + userLocation;
+    }
+
+    @GetMapping("/headers/map")
+    public String readHeadersUsingMap(@RequestHeader Map<String, String> headers) {
+        // list of HTTP header fields, e.g. Host, User-Agent, Accept, Connection
+        // use map to get() fields, headers.get("User-Agent")
+        return "Received headers with value: " + headers.toString();
+    }
+
+    @GetMapping("/headers/httpheaders")
+    public String readHeadersUsingHttpHeaders(@RequestHeader HttpHeaders headers) {
+        // HttpHeaders implements MultivalueMap<String, String>
+        List<String> location = headers.get("User-Location");
+        return "Received headers with value: " + headers.toString();
+    }
+
 
     @GetMapping("/search")
     public String searchUser(@RequestParam(required = false, defaultValue = "Guest",
