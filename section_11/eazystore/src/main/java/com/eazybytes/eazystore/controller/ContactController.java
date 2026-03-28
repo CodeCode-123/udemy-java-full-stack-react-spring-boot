@@ -5,6 +5,7 @@ import com.eazybytes.eazystore.dto.ProductDto;
 import com.eazybytes.eazystore.entity.Contact;
 import com.eazybytes.eazystore.service.IContactService;
 import com.eazybytes.eazystore.service.IProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class ContactController {
     private final IContactService contactService;
 
     @PostMapping
-    public ResponseEntity<String> saveContact(@RequestBody ContactRequestDto contactRequestDto) {
+    public ResponseEntity<String> saveContact(@Valid @RequestBody ContactRequestDto contactRequestDto) {
         // The global exception handler will handle the error
         contactService.saveContact(contactRequestDto);
         //throw new RuntimeException("Oops something bad happened");
