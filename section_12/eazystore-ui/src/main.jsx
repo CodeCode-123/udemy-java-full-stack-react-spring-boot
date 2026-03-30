@@ -14,7 +14,7 @@ import { contactAction } from './components/Contact.jsx';
 import { ToastContainer, Bounce } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import ProductDetail from './components/ProductDetail.jsx';
-import { CartContext } from "./store/cart-context.jsx";
+import { CartProvider } from "./store/cart-context.jsx";
 
 const routeDefinitions = createRoutesFromElements(
   <Route path="/" element={<App/>} errorElement={<ErrorPage/>}>
@@ -30,25 +30,15 @@ const routeDefinitions = createRoutesFromElements(
 
 const appRouter = createBrowserRouter(routeDefinitions);
 
-const initialCartContext = {
-  cart: [],
-  setCart: () => {},
-  addToCart: () => {
-    console.log("Product added to cart");
-  },
-  removeFromCart: () => {},
-  totalQuantity: 0,
-};
-
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     {/* .Provider can be omitted, only use <CartContext></CartContext> */}
-    <CartContext.Provider value={initialCartContext}> 
+    <CartProvider> 
       {/* the value can be shared by all the children of CartContext, by wrapping 
       RouterProvider all the components are becoming the child components 
       of the CartContext */}
       <RouterProvider router={appRouter}/>
-    </CartContext.Provider>
+    </CartProvider>
     <ToastContainer
     position='top-center'
     autoClose={3000}
