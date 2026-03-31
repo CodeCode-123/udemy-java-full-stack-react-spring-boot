@@ -8,6 +8,11 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -35,6 +40,20 @@ public class EazyStoreSecurityConfig {
         })
                 .formLogin(withDefaults()) // use the default setup like login page url
                 .httpBasic(withDefaults()).build();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        var user1 = User.builder().username("madan")
+                .password("$2a$12$7AUqAIHx0XNsU.ruIoUU1.voPxT9NkOp3NDdQldE5Z3.E5U.flNau").roles("USER").build(); // need to provide BCryptPassword
+        var use2 = User.builder().username("admin")
+                .password("$2a$12$vmaHv2.i9kbaciM5fMyTI.KQkoZtzdudI/R2.LOmODCd6CSK17dxS").roles("USER", "ADMIN").build();
+        return new InMemoryUserDetailsManager(user1, use2);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
