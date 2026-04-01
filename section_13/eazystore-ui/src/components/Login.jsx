@@ -5,15 +5,18 @@ import PageTitle from "./PageTitle";
 import { Link, Form, useActionData, useNavigation, useNavigate } from 'react-router-dom';
 import apiClient from '../api/apiClient';
 import { toast } from 'react-toastify';
+import { useAuth } from '../store/auth-context';
 
 export default function Login() {
   const actionData = useActionData();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
   const navigate = useNavigate();
+  const { loginSuccess } =  useAuth();
 
   useEffect(() => {
     if (actionData?.success) {
+      loginSuccess(actionData.jwtToken, actionData.user);
       navigate("/home");
     } else if (actionData?.errors) {
       toast.error(actionData.errors.message || "Login failed.");
@@ -59,7 +62,7 @@ export default function Login() {
               placeholder="Your Password"
               autoComplete="current-password"
               required
-              minLength={8}
+              minLength={4}
               maxLength={20}
               className={textFieldStyle}
             />
@@ -100,7 +103,7 @@ export async function loginAction({ request }) {
   };
 
   try {
-    const response = await apiClient.post("/auth/v1/login", loginData);
+    const response = await apiClient.post("/auth/login", loginData);
     const { message, user, jwtToken } = response.data;
     return { success: true, message, user, jwtToken};
   } catch (error) {
