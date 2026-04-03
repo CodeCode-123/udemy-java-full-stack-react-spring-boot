@@ -35,4 +35,7 @@ public class Customer extends BaseEntity{
     @NotNull
     @Column(name = "password_hash", nullable = false, length = 500)
     private String passwordHash;
+
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    private Address address;
 }

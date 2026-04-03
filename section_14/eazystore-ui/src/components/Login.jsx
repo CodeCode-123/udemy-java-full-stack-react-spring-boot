@@ -19,7 +19,10 @@ export default function Login() {
     if (actionData?.success) {
       loginSuccess(actionData.jwtToken, actionData.user);
       sessionStorage.removeItem("redirectPath");
-      navigate(from);
+      // wait for 100 ms after the jwt is saved in and retrieved from the localStorage
+      setTimeout(() => {
+        navigate(from);
+      }, 100);
     } else if (actionData?.errors) {
       toast.error(actionData.errors.message || "Login failed.");
     }

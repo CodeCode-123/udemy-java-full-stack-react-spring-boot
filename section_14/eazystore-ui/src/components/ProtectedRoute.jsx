@@ -7,7 +7,9 @@ export default function ProtectedRoute() {
   const location = useLocation();
 
   useEffect(() => {
-    if (!isAuthenticated && location.pathname !== "/login") {
+    // try to avoid redirect to the My Profile page after changing the email and login
+    const skipRedirect = sessionStorage.getItem("skipRedirectPath") === "true";
+    if (!isAuthenticated && location.pathname !== "/login" && !skipRedirect) {
       sessionStorage.setItem("redirectPath", location.pathname);
     }
   }, [isAuthenticated, location.pathname]);
