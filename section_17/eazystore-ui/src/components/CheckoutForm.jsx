@@ -123,6 +123,7 @@ export default function CheckoutForm() {
               price: item.price,
             })),
           });
+          // try to avoid redirect to the payment successful page after logout and login again
           sessionStorage.setItem("skipRedirectPath", "true");
           clearCart();
           navigate("/order-success");

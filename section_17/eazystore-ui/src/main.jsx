@@ -33,6 +33,7 @@ import Messages from "./components/admin/Messages.jsx";
 import Register, { registerAction } from "./components/Register.jsx";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import OrderSuccess from "./components/OrderSuccess.jsx";
 
 // load the Stripe API keys, Publishable key
 const stripePromise = loadStripe(
@@ -51,6 +52,7 @@ const routeDefinitions = createRoutesFromElements(
     <Route path="/products/:productId" element={<ProductDetail />} />
     <Route element={<ProtectedRoute />}>
       <Route path="/checkout" element={<CheckoutForm />} />
+      <Route path="/order-success" element={<OrderSuccess/>} />
       <Route
         path="/profile"
         element={<Profile />}

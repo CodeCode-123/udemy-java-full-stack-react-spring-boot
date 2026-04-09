@@ -38,4 +38,20 @@ apiClient.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
+// If the user has been logged in, and the JWT token expired, check the token in the localStorage
+// if the token is in the localStorage, remove the token and redirect to login page  
+apiClient.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        if (error.response && error.response.status === 401) {
+            const jwtToken = localStorage.getItem("jwtToken");
+            if (jwtToken) {
+                localStorage.removeItem("jwtToken");
+                window.location.href = "/login";
+            }
+        }
+        return Promise.reject(error);
+    }
+);
+
 export default apiClient;

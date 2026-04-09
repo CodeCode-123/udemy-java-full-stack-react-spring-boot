@@ -8,6 +8,7 @@ export default function ProtectedRoute() {
 
   useEffect(() => {
     // try to avoid redirect to the My Profile page after changing the email and login
+    // try to avoid redirect to the payment successful page after logout and login again
     const skipRedirect = sessionStorage.getItem("skipRedirectPath") === "true";
     if (!isAuthenticated && location.pathname !== "/login" && !skipRedirect) {
       sessionStorage.setItem("redirectPath", location.pathname);

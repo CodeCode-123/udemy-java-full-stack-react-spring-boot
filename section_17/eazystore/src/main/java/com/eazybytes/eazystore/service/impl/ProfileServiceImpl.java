@@ -49,7 +49,7 @@ public class ProfileServiceImpl implements IProfileService {
         return profileResponseDto;
     }
 
-    private Customer getAuthenticatedCustomer() {
+    public Customer getAuthenticatedCustomer() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         assert authentication != null;
         String email = authentication.getName();
