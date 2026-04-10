@@ -29,7 +29,7 @@ import Profile, {
 } from "./components/Profile.jsx";
 import Orders, { ordersLoader } from "./components/Orders.jsx";
 import AdminOrders, { adminOrdersLoader } from "./components/admin/AdminOrders.jsx";
-import Messages from "./components/admin/Messages.jsx";
+import Messages, { messagesLoader } from "./components/admin/Messages.jsx";
 import Register, { registerAction } from "./components/Register.jsx";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
@@ -68,7 +68,11 @@ const routeDefinitions = createRoutesFromElements(
         element={<AdminOrders />} 
         loader={adminOrdersLoader}
       />
-      <Route path="/admin/messages" element={<Messages />} />
+      <Route 
+        path="/admin/messages" 
+        element={<Messages />} 
+        loader={messagesLoader}
+      />
     </Route>
   </Route>
 );

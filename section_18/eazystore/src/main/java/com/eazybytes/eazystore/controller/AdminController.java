@@ -1,6 +1,7 @@
 package com.eazybytes.eazystore.controller;
 
 import com.eazybytes.eazystore.constants.ApplicationConstants;
+import com.eazybytes.eazystore.dto.ContactResponseDto;
 import com.eazybytes.eazystore.dto.OrderResponseDto;
 import com.eazybytes.eazystore.dto.ResponseDto;
 import com.eazybytes.eazystore.entity.Order;
@@ -38,5 +39,16 @@ public class AdminController {
         return ResponseEntity.ok(
                 new ResponseDto("200", "Order #" + cancelledOrder.getOrderId() + " has been cancelled.")
         );
+    }
+
+    @GetMapping("/messages")
+    public ResponseEntity<List<ContactResponseDto>> getAllOpenMessages() {
+        return ResponseEntity.ok(iContactService.getAllOpenMessages());
+    }
+
+    @PatchMapping("/messages/{contactId}/close")
+    public ResponseEntity<ResponseDto> closeMessage(@PathVariable Long contactId) {
+        iContactService.updateMessageStatus(contactId, ApplicationConstants.CLOSED_MESSAGE);
+        return ResponseEntity.ok(new ResponseDto("200", "Message #" + contactId + " has been closed."));
     }
 }
