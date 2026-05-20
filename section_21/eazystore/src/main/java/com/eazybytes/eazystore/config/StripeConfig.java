@@ -4,8 +4,11 @@ import com.stripe.Stripe;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
+//use @PropertySource if lading properties from an external file other than application.properties
 @Configuration
+@PropertySource("classpath:stripe.properties") //the location of stripe.apiKey
 public class StripeConfig {
     @Value("${stripe.apiKey}")
     private String apiKey;
